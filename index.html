@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Comunidad Roblox del Futuro</title>
+    
+    <!-- Google Fonts: Orbitron y Audiowide -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- VARIABLES Y ESTILOS GLOBALES --- */
+        :root {
+            --color-bg: #0d0221;
+            --color-primary: #261447;
+            --color-neon-blue: #00d9ff;
+            --color-neon-pink: #ff00c1;
+            --color-neon-green: #39ff14;
+            --color-text: #f0f0f0;
+            --font-title: 'Orbitron', sans-serif;
+            --font-body: 'Audiowide', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-body);
+            overflow-x: hidden; /* Evita el desbordamiento horizontal */
+        }
+        
+        /* --- FONDO ANIMADO CON CANVAS --- */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL Y ESTRUCTURA --- */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        /* --- HEADER Y TÍTULO PRINCIPAL --- */
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 1rem;
+        }
+
+        .main-title {
+            font-family: var(--font-title);
+            font-size: clamp(2.5rem, 10vw, 6rem); /* Tamaño de fuente adaptable */
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            animation: fadeInGlow 3s ease-in-out forwards;
+            text-shadow:
+                0 0 5px var(--color-neon-pink),
+                0 0 10px var(--color-neon-pink),
+                0 0 20px var(--color-neon-blue),
+                0 0 40px var(--color-neon-blue);
+        }
+
+        @keyframes fadeInGlow {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .header-nav {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        /* --- ESTILOS DE BOTONES --- */
+        .btn {
+            background: transparent;
+            color: var(--color-text);
+            border: 2px solid var(--color-neon-blue);
+            padding: 0.8rem 1.8rem;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px 0 var(--color-neon-blue) inset, 0 0 10px 2px var(--color-neon-blue);
+        }
+
+        .btn:hover {
+            color: var(--color-bg);
+            background-color: var(--color-neon-blue);
+            box-shadow: 0 0 20px 5px var(--color-neon-blue);
+            transform: translateY(-3px);
+        }
+        
+        .btn-pink {
+            border-color: var(--color-neon-pink);
+            box-shadow: 0 0 10px 0 var(--color-neon-pink) inset, 0 0 10px 2px var(--color-neon-pink);
+        }
+        
+        .btn-pink:hover {
+            background-color: var(--color-neon-pink);
+            box-shadow: 0 0 20px 5px var(--color-neon-pink);
+        }
+
+        /* --- SECCIÓN DE COMUNIDAD Y VIDEO --- */
+        #community {
+            padding: 4rem 0;
+            background: linear-gradient(180deg, rgba(13, 2, 33, 0) 0%, var(--color-primary) 50%, rgba(13, 2, 33, 0) 100%);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            font-family: var(--font-title);
+            text-shadow: 0 0 10px var(--color-neon-pink);
+        }
+
+        .community-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* Proporción 16:9 */
+            height: 0;
+            border: 2px solid var(--color-neon-blue);
+            box-shadow: 0 0 15px var(--color-neon-blue);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .community-description h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--color-neon-pink);
+        }
+
+        .community-description p {
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+        
+        /* --- SECCIÓN DE MAPAS --- */
+        #maps {
+            padding: 4rem 0;
+        }
+
+        .maps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            align-items: stretch;
+        }
+
+        .map-card {
+            background-color: rgba(38, 20, 71, 0.5);
+            border: 2px solid var(--color-primary);
+            border-radius: 10px;
+            transition: all 0.4s ease; /* Transición más suave para el tilt */
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+            display: flex; 
+            transform-style: preserve-3d; /* Necesario para el efecto 3D */
+        }
+        
+        .map-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, var(--color-neon-green), transparent 30%);
+            animation: rotate 4s linear infinite;
+        }
+
+        .map-card:hover {
+            border-color: var(--color-neon-green);
+            box-shadow: 0 10px 30px rgba(57, 255, 20, 0.2);
+        }
+        
+        .map-card:hover::before {
+            animation-play-state: paused;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .map-card-content {
+            position: relative;
+            z-index: 1;
+            background: var(--color-primary);
+            padding: 2rem;
+            border-radius: 6px;
+            width: 100%;
+            transform: translateZ(20px); /* Eleva el contenido para el efecto 3D */
+        }
+
+        .map-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 1rem;
+            stroke: var(--color-neon-green);
+        }
+
+        .map-card h3 {
+            font-family: var(--font-title);
+            color: var(--color-neon-green);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .map-card p {
+            line-height: 1.6;
+            font-size: 0.95rem;
+            font-family: sans-serif;
+            opacity: 0.9;
+        }
+        
+        .map-card p strong {
+            font-family: var(--font-body);
+            color: var(--color-text);
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+        
+        /* --- SECCIÓN PERFIL DE ADMIN --- */
+        #admin-profile {
+            padding: 4rem 0;
+        }
+        
+        .admin-card {
+            background: rgba(38, 20, 71, 0.6);
+            border: 2px solid var(--color-neon-pink);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            box-shadow: 0 0 25px rgba(255, 0, 193, 0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease;
+        }
+
+        .admin-header {
+            transform: translateZ(20px);
+        }
+        .admin-details {
+            transform: translateZ(20px);
+        }
+        
+        .admin-header h3 {
+            font-family: var(--font-title);
+            font-size: 2.2rem;
+            color: var(--color-neon-pink);
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-header p {
+            font-size: 1.2rem;
+            color: var(--color-text);
+            font-style: italic;
+        }
+        
+        .admin-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .detail-block h4 {
+            font-family: var(--font-body);
+            font-size: 1.3rem;
+            color: var(--color-neon-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .detail-icon {
+            width: 24px;
+            height: 24px;
+            stroke: var(--color-neon-blue);
+        }
+        
+        .detail-block ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .detail-block li {
+            background: rgba(0,0,0,0.2);
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 0.8rem;
+            border-left: 3px solid var(--color-neon-blue);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .detail-block li:hover {
+            transform: translateX(5px);
+            border-left-color: var(--color-neon-pink);
+            background: rgba(255, 0, 193, 0.1);
+        }
+
+        .detail-block li strong {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--color-text);
+            font-size: 1.1rem;
+        }
+        
+        .detail-block li span {
+            font-family: sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+
+        /* --- ANIMACIONES DE SCROLL --- */
+        .hidden-anim {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .show-anim {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--color-primary);
+        }
+        
+        /* --- MEDIA QUERIES --- */
+        @media (max-width: 992px) {
+            .community-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Canvas para el fondo animado -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Header -->
+    <header>
+        <h1 class="main-title">La Comunidad Roblox del Futuro</h1>
+        <nav class="header-nav">
+            <a href="https://discord.gg/" target="_blank" class="btn btn-pink">Unirse al Discord</a>
+            <a href="#maps" class="btn">Ver Mapas</a>
+            <a href="#community" class="btn">Explorar Comunidad</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Sección Comunidad -->
+        <section id="community" class="hidden-anim">
+            <div class="container">
+                <h2 class="section-title">Una Nueva Era de Jugadores</h2>
+                <div class="community-content">
+                    <div class="video-container">
+                        <iframe 
+                            src="https://www.youtube.com/embed/7i7nq6i-YxM?autoplay=1&mute=1&controls=0&loop=1&playlist=7i7nq6i-YxM" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="community-description">
+                        <h3>Creativa, Competitiva y Colaborativa.</h3>
+                        <p>
+                            Somos una comunidad de pioneros, constructores y competidores que viven en el filo de la innovación de Roblox. Aquí encontrarás desde tryhards que buscan dominar cada arena hasta mentes creativas que diseñan mundos enteros. Si te apasionan los desafíos, la estrategia en equipo y llevar la creatividad al límite, has encontrado tu lugar. ¡Únete a nuestro Discord y sé parte de la evolución!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Mapas Destacados -->
+        <section id="maps" class="hidden-anim">
+            <div class="container">
+                <h2 class="section-title">Juegos en Foco</h2>
+                <div class="maps-grid">
+                    <div class="map-card tilt-effect">
+                         <div class="map-card-content">
+                            <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                            <h3>Dead Rails (“Rieles Muertos”)</h3>
+                            <p><strong>Supervivencia en el Lejano Oeste Zombi.</strong> Ambientado en 1899, un virus ha devastado América. Tu misión es llegar a 80 km en locomotora, recogiendo combustible y luchando contra forajidos y un jefe final inspirado en Tesla.<br><br><strong>Clases y Estrategia.</strong> Desbloquea clases como Cowboy, Miner o Vampire, cada una con habilidades únicas. El juego se actualiza constantemente con eventos y nuevos modos como “Scorched Earth”.</p>
+                        </div>
+                    </div>
+
+                    <div class="map-card tilt-effect">
+                        <div class="map-card-content">
+                             <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.5 13.5h.75a.75.75 0 000-1.5h-.75a.75.75 0 000 1.5z" /></svg>
+                            <h3>Dress to Impress</h3>
+                            <p><strong>La Pasarela es tuya.</strong> Un fenómeno de moda con más de 6 mil millones de visitas. Crea un look en 5 minutos basado en un tema, desfila y vota. ¡Sube de rango para desbloquear ítems exclusivos!<br><br><strong>Impacto Cultural.</strong> Ganador de múltiples premios y con colaboraciones como la de Charli XCX, este juego ha trascendido Roblox, viralizándose en TikTok e influyendo en la moda real.</p>
+                        </div>
+                    </div>
+
+                    <div class="map-card tilt-effect">
+                        <div class="map-card-content">
+                           <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+                            <h3>Murder Mystery 2 (MM2)</h3>
+                            <p><strong>Un Clásico de Engaño y Deducción.</strong> Con más de 11 años en Roblox, MM2 enfrenta a Inocentes, un Sheriff y un Asesino. Sobrevive, protege o elimina a todos para ganar.<br><br><strong>Modos de Juego.</strong> Elige tu estilo: Casual para una partida rápida, Hardcore para un desafío mayor, o Assassin para una experiencia de sigilo y estrategia. La comunidad siempre debate sobre el equilibrio perfecto.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Perfil de Admin -->
+        <section id="admin-profile" class="hidden-anim">
+            <div class="container">
+                <h2 class="section-title">Conoce a la Administradora</h2>
+                <div class="admin-card tilt-effect">
+                    <div class="admin-header">
+                        <h3>Pilar0450</h3>
+                        <p>Jugadora Profesional & Creadora Multifacética</p>
+                    </div>
+                    <div class="admin-details">
+                        <div class="detail-block">
+                            <h4><svg class="detail-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 20.25h12m-7.5-3.75v-6m3.75 6v-6m3.75-6.75H19.5a2.25 2.25 0 012.25 2.25v10.5a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 18V6.75a2.25 2.25 0 012.25-2.25h1.5m3 0V3.75m3 0V3.75m3 0V3.75m-9 3.75h3m3 0h3m-3 0V9.75m-3 0V9.75" /></svg>Especialización en Roblox</h4>
+                            <ul>
+                                <li><strong>Dead Rails (“Rieles Muertos”)</strong><span>Donde la tensión y la puntería lo son todo. Un shooter sobre rieles que pone a prueba los reflejos y la estrategia en cada partida.</span></li>
+                                <li><strong>Dress to Impress</strong><span>El escenario perfecto para desatar la creatividad. Competir creando los mejores atuendos según la temática es un arte y una ciencia.</span></li>
+                                <li><strong>MM2 (Murder Mystery 2)</strong><span>Un juego de engaño y deducción. Disfruta tanto el rol de detective, buscando pistas para encontrar al asesino, como el de inocente, intentando sobrevivir.</span></li>
+                            </ul>
+                        </div>
+                        <div class="detail-block">
+                             <h4><svg class="detail-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.32 1.011l-4.194 4.011a.563.563 0 00-.162.505l1.18 5.42a.563.563 0 01-.844.62l-4.718-2.655a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.844-.62l1.18-5.42a.563.563 0 00-.162-.505l-4.194-4.011a.563.563 0 01.32-1.011l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>Más Allá de la Pantalla</h4>
+                            <ul>
+                                <li><strong>Fandom & Música</strong><span>La energía del K-Pop con TWICE (bias: Mina) y BLACKPINK, y la creatividad sin límites de la idol virtual Hatsune Miku.</span></li>
+                                <li><strong>Estética Indie</strong><span>Para momentos más relajados, la atmósfera nostálgica y soñadora de bandas como TV Girl es la banda sonora ideal.</span></li>
+                
+                                <li><strong>Creación Analógica</strong><span>Las manualidades y las artes plásticas son su forma de desconectar, llevando la creatividad del mundo digital al físico.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="hidden-anim">
+        <div class="container">
+            <p>&copy; 2025 Comunidad Roblox. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Script para la animación del canvas y dinamismo -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- ANIMACIÓN DE FONDO CON CANVAS ---
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const letters = 'ROBLX01'.split('');
+            const fontSize = 16;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(1);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(13, 2, 33, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                const particleColors = ['#00d9ff', '#ff00c1', '#39ff14', '#f0f0f0'];
+                ctx.font = `${fontSize}px monospace`;
+
+                for (let i = 0; i < drops.length; i++) {
+                    ctx.fillStyle = particleColors[Math.floor(Math.random() * particleColors.length)];
+                    const text = letters[Math.floor(Math.random() * letters.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+                    ctx.fillText(text, x, y);
+                    if (y > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            setInterval(draw, 50);
+            
+            // --- ANIMACIÓN AL HACER SCROLL (INTERSECTION OBSERVER) ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show-anim');
+                    }
+                });
+            }, { threshold: 0.1 }); // Se activa cuando el 10% del elemento es visible
+
+            const hiddenElements = document.querySelectorAll('.hidden-anim');
+            hiddenElements.forEach((el) => observer.observe(el));
+
+            // --- EFECTO TILT 3D EN TARJETAS ---
+            const tiltElements = document.querySelectorAll('.tilt-effect');
+
+            tiltElements.forEach(element => {
+                element.addEventListener('mousemove', (e) => {
+                    const { left, top, width, height } = element.getBoundingClientRect();
+                    const x = e.clientX - left;
+                    const y = e.clientY - top;
+
+                    const rotateX = -1 * ((y - height / 2) / (height / 2)) * 8; // Max 8 grados
+                    const rotateY = ((x - width / 2) / (width / 2)) * 8; // Max 8 grados
+
+                    element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
+                });
+
+                element.addEventListener('mouseleave', () => {
+                    element.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                });
+            });
+
+        });
+    </script>
+
+</body>
+</html>
